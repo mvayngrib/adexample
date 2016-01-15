@@ -17,26 +17,23 @@ let styles = React.StyleSheet.create({
   }
 })
 
-let levelup = require('levelup')
-let leveldown = require('asyncstorage-down')
-let db = levelup('blah', { db: leveldown })
-db.put('hey', 'ho')
-
 class App extends React.Component {
   constructor(props) {
     super(props)
-    this.state = {}
+    this.state = { messages: [] }
   }
-  componentDidMount () {
-    let key = 'hey'
-    db.get(key, (err, value) => {
-      this.setState({ key, value })
-    })
+  componentDidMount() {
+    let self = this
+    console.log = (msg) => {
+      self.setState({ messages: [...self.state.messages, msg] })
+    }
+
+    require('asyncstorage-down/test/test')
   }
   render() {
     return (
       <View style={styles.container}>
-        <Text>{JSON.stringify(this.state)}</Text>
+        <Text>{this.state.messages.join('\n')}</Text>
       </View>
     )
   }
